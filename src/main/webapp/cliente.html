@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Cadastro de Cliente</title>
+
+
+<script src="js/jquery-3.1.0.min.js"></script>
+
+<script>
+$(document).ready(function (){
+
+	$("#btSalvar").click(function (){
+
+		$.post("clientes",  { nome: "jao", email: "jao@htcursos.com"}   , function (data, status){ 
+			window.alert(data)
+		});
+	});	
+});
+	
+</script>
+</head>
+<body>
+
+<h1> Cadastro de Cliente</h1>
+<form>
+	<label>Nome:</label>
+	<input type="text" id="txtNome"/>
+	
+	<label>E-mail:</label>
+	<input type="text" id="txtEmail"/>
+	
+	<input type="button" id="btSalvar" value="Salvar"/>
+</form>
+
+</body>
+</html>
