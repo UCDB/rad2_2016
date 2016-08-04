@@ -40,7 +40,13 @@ public class ClienteController extends HttpServlet {
 			//Grava
 			cli = cadastrar(cli);
 			
-			//Retornar pra tela
+			//Retornar pra tela  //JSON {  id: '1 , nome: 'jao', email: 'jao@htcursos.com' } => Objeto JS
 			resp.getWriter().println(cli.getId() + " "+  cli.getEmail() + " "+ cli.getNome());
+	}
+	
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String dados = "{ \"clientes\": [ {\"id\": \"1\", \"nome\":\"jao do controller\", \"email\": \"jao@x.com\" } , {\"id\": \"2\", \"nome\":\"ze\", \"email\": \"ze@x.com\" } ] }";
+		resp.getWriter().println(dados);
 	}
 }

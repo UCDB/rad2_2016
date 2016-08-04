@@ -10,9 +10,29 @@
 <script>
 $(document).ready(function (){
 
+	//Nativo
+	$.get("clientes", function (data, status){
+
+		var objDados = JSON.parse(data);
+
+		conteudo = document.getElementById("conteudo");
+
+		for (i=0; i<objDados.clientes.length ; i++){
+			
+			conteudo.innerHTML += objDados.clientes[i].id+ "| "  + objDados.clientes[i].nome + " | " + objDados.clientes[i].email + "<br>";
+		}
+		
+	});
+
+
+	//jquery
+	
 	$("#btSalvar").click(function (){
 
-		$.post("clientes",  { nome: "jao", email: "jao@htcursos.com"}   , function (data, status){ 
+		txtNome = $("#txtNome").val();
+		txtEmail = $("#txtEmail").val();
+		
+		$.post("clientes",  { nome: txtNome , email: txtEmail}   , function (data, status){ 
 			window.alert(data)
 		});
 	});	
@@ -31,7 +51,16 @@ $(document).ready(function (){
 	<input type="text" id="txtEmail"/>
 	
 	<input type="button" id="btSalvar" value="Salvar"/>
+	
+	
 </form>
+
+	<div id="conteudo">
+	
+	</div>
+	
+	
+
 
 </body>
 </html>
