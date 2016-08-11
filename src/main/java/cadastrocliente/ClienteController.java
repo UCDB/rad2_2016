@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import model.Cliente;
 @WebServlet(value="/clientes")
 public class ClienteController extends HttpServlet {
@@ -46,23 +48,13 @@ public class ClienteController extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		StringBuffer json= new StringBuffer("{\"clientes\": [ ");
-		for (int i = 0 ; i<listaCliente.size() ; i++){
-			 Cliente c = listaCliente.get(i);
-			 
-			String id = c.getId().toString();
-			String nome = c.getNome();
-			String email = c.getEmail();
-			
-			json.append("{\"id\": \""+  id +  "\", \"nome\":\""+ nome +"\", \"email\": \""+email+"\" } ");
-			
-			if ((i+1)!=listaCliente.size()){
-				json.append(",");	
-			}
-		}
 		
-		json.append(" ] }");
-	 
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String json = mapper.writeValueAsString(listaCliente);
+		
+		json = "{ \"clientes\":" + json + "}" ;
+		
 		//json = "{ \"clientes\": [ {\"id\": \"1\", \"nome\":\"jao do controller\", \"email\": \"jao@x.com\" } , {\"id\": \"2\", \"nome\":\"ze\", \"email\": \"ze@x.com\" } ] }";
 		resp.getWriter().println(json);
 	}
