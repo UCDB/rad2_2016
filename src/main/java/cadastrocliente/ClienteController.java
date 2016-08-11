@@ -46,7 +46,24 @@ public class ClienteController extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String dados = "{ \"clientes\": [ {\"id\": \"1\", \"nome\":\"jao do controller\", \"email\": \"jao@x.com\" } , {\"id\": \"2\", \"nome\":\"ze\", \"email\": \"ze@x.com\" } ] }";
-		resp.getWriter().println(dados);
+		StringBuffer json= new StringBuffer("{\"clientes\": [ ");
+		for (int i = 0 ; i<listaCliente.size() ; i++){
+			 Cliente c = listaCliente.get(i);
+			 
+			String id = c.getId().toString();
+			String nome = c.getNome();
+			String email = c.getEmail();
+			
+			json.append("{\"id\": \""+  id +  "\", \"nome\":\""+ nome +"\", \"email\": \""+email+"\" } ");
+			
+			if ((i+1)!=listaCliente.size()){
+				json.append(",");	
+			}
+		}
+		
+		json.append(" ] }");
+	 
+		//json = "{ \"clientes\": [ {\"id\": \"1\", \"nome\":\"jao do controller\", \"email\": \"jao@x.com\" } , {\"id\": \"2\", \"nome\":\"ze\", \"email\": \"ze@x.com\" } ] }";
+		resp.getWriter().println(json);
 	}
 }

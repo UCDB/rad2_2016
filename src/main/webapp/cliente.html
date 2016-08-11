@@ -11,19 +11,23 @@
 $(document).ready(function (){
 
 	//Nativo
-	$.get("clientes", function (data, status){
-
-		var objDados = JSON.parse(data);
-
-		conteudo = document.getElementById("conteudo");
-
-		for (i=0; i<objDados.clientes.length ; i++){
-			
-			conteudo.innerHTML += objDados.clientes[i].id+ "| "  + objDados.clientes[i].nome + " | " + objDados.clientes[i].email + "<br>";
-		}
+	function carregarClientes(){
+		conteudo.innerHTML ="";
 		
-	});
-
+		$.get("clientes", function (data, status){
+	
+			var objDados = JSON.parse(data);
+	
+			conteudo = document.getElementById("conteudo");
+	
+			for (i=0; i<objDados.clientes.length ; i++){
+				
+				conteudo.innerHTML += objDados.clientes[i].id+ "| "  + objDados.clientes[i].nome + " | " + objDados.clientes[i].email + "<br>";
+			}
+			
+		});
+	}
+	carregarClientes();
 
 	//jquery
 	
@@ -33,7 +37,8 @@ $(document).ready(function (){
 		txtEmail = $("#txtEmail").val();
 		
 		$.post("clientes",  { nome: txtNome , email: txtEmail}   , function (data, status){ 
-			window.alert(data)
+			window.alert("Salvo com Sucesso!");
+			carregarClientes();
 		});
 	});	
 });
