@@ -1,20 +1,16 @@
 package cadastrocliente;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import model.Cliente;
-@WebServlet(value="/clientes")
-public class ClienteController extends HttpServlet {
+@RestController(value="/clientes")
+public class ClienteController{
 	
 	//Métodos de Regra de negócio
 	private List<Cliente> listaCliente =  new ArrayList<Cliente>();
@@ -28,34 +24,15 @@ public class ClienteController extends HttpServlet {
 	 }
 
 	 
-	 //Método do controller
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		//Captura da tela
-			String nome = req.getParameter("nome");
-			String email =  req.getParameter("email");
-			//Instancia Objeto
-			Cliente cli =  new Cliente();
-			cli.setNome(nome);
-			cli.setEmail(email);
-				
-			//Grava
-			cli = cadastrar(cli);
-			
-			//Retornar pra tela  //JSON {  id: '1 , nome: 'jao', email: 'jao@htcursos.com' } => Objeto JS
-			resp.getWriter().println(cli.getId() + " "+  cli.getEmail() + " "+ cli.getNome());
+	 //Métodos Controlller
+	 @RequestMapping(method=RequestMethod.POST)
+	 public Cliente salvar (@RequestBody Cliente cliente){ 
+		 	cliente = cadastrar(cliente);
+			return cliente;
 	}
 	
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
-		ObjectMapper mapper = new ObjectMapper();
-		
-		String json = mapper.writeValueAsString(listaCliente);
-		
-		json = "{ \"clientes\":" + json + "}" ;
-		
-		//json = "{ \"clientes\": [ {\"id\": \"1\", \"nome\":\"jao do controller\", \"email\": \"jao@x.com\" } , {\"id\": \"2\", \"nome\":\"ze\", \"email\": \"ze@x.com\" } ] }";
-		resp.getWriter().println(json);
+	@RequestMapping(method=RequestMethod.GET) 
+	public List<Cliente> listar(){
+		return listaCliente;
 	}
 }
