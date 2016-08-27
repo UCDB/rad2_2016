@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import model.Cliente;
@@ -24,16 +23,7 @@ public class ClienteController{
 		 return cli;
 	 }
 	 
-	 private Cliente buscar(Integer id){
-		 
-		 for (Cliente c: listaCliente){
-			 if (id==c.getId()){
-				 return c;
-			 }
-		 }
-		 return null;
-	 }
-
+	
 	 
 	 //Métodos Controlller
 	 @RequestMapping(method=RequestMethod.POST)
@@ -47,9 +37,5 @@ public class ClienteController{
 		return listaCliente;
 	}
 	
-	@RequestMapping(value="/{id}" ,method=RequestMethod.GET)
-	public Cliente buscarPorId(@RequestParam ("id") Integer id){
-		return buscar(id);
-	}
 	
 }
