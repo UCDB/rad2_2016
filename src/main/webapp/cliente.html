@@ -27,7 +27,7 @@ $(document).ready(function (){
 			
 		});
 	}
-	carregarClientes();
+	//carregarClientes();
 
 	//jquery
 	
@@ -39,7 +39,7 @@ $(document).ready(function (){
 		$.post("clientes",  { nome: txtNome , email: txtEmail}   , function (data, status){ 
 			window.alert("Salvo com Sucesso!");
 			carregarClientes();
-		});
+		},"json");
 	});	
 });
 	
