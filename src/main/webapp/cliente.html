@@ -14,22 +14,49 @@ $(document).ready(function (){
 
 	//jquery
 	
+	$("#btCancelar").click(function (){
+			limpar();
+	});
+
+	
 	$("#btSalvar").click(function (){
 
+		txtId = $("#txtId").val();
 		txtNome = $("#txtNome").val();
 		txtEmail = $("#txtEmail").val();
-		
-		$.ajax({
+
+		if (txtId!=""){
+			//Alterar
+			$.ajax({
 				url:'clientes',
-				type:'POST',
+				type:'PUT',
 				dataType:'json',
 				contentType:'application/json;charset=UTF-8',
-				data:JSON.stringify({nome:txtNome,email:txtEmail}),
+				data:JSON.stringify({id:txtId,nome:txtNome,email:txtEmail}),
 				success:function(){
 					window.alert("Salvo com Sucesso!");
+					//TODO: Alterar no vertor
 					carregarClientes();
 				}
 			});
+		}else{
+
+			//Cadastrar
+			$.ajax({
+					url:'clientes',
+					type:'POST',
+					dataType:'json',
+					contentType:'application/json;charset=UTF-8',
+					data:JSON.stringify({nome:txtNome,email:txtEmail}),
+					success:function(){
+						window.alert("Salvo com Sucesso!");
+						//TODO: push no vetor
+						carregarClientes();
+					}
+				});
+		}
+
+		limpar();
 	
 	});	
 });
@@ -41,36 +68,55 @@ function excluir (id){
 				type:'DELETE',
 				success:function(){
 					window.alert("Excluido com Sucesso!");
+					//TODO: indexOf, splice
 					carregarClientes();
 				}
 			});
 	}
 }
 
+//
+var dados ={};
 //Nativo
 function carregarClientes(){
 	conteudo.innerHTML ="";
 	
 	$.get("clientes", function (objDados, status){
-
+		dados =  objDados;
 		conteudo = document.getElementById("conteudo");
 
 		for (i=0; i<objDados.length ; i++){
 			
 			conteudo.innerHTML += objDados[i].id+ "| "  + objDados[i].nome + " | " + objDados[i].email ;
-			conteudo.innerHTML += "<button onclick='excluir("+ objDados[i].id+")'>excluir</button><br>"			
-	
+			conteudo.innerHTML += "<button onclick='excluir("+ objDados[i].id+")'>excluir</button>";			
+			conteudo.innerHTML += "<button onclick='editar("+i+")'>editar</button><br>";			
+			
 			}
 		
 	});
 }
 
+function editar(i){
+	$("#txtId").val(dados[i].id);
+	$("#txtNome").val(dados[i].nome);	
+	$("#txtEmail").val(dados[i].email);	
+}
+
+
+function limpar(){
+	$("#txtId").val("");
+	$("#txtNome").val("");
+	$("#txtEmail").val("");
+	
+}
 </script>
 </head>
 <body>
 
 <h1> Cadastro de Cliente</h1>
 <form>
+	<input type="hidden" id="txtId">
+	
 	<label>Nome:</label>
 	<input type="text" id="txtNome"/>
 	
@@ -78,6 +124,7 @@ function carregarClientes(){
 	<input type="text" id="txtEmail"/>
 	
 	<input type="button" id="btSalvar" value="Salvar"/>
+	<input type="button" id="btCancelar" value="Cancelar"/>
 	
 	
 </form>
