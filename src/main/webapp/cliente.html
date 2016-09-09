@@ -9,25 +9,8 @@
 
 <script>
 $(document).ready(function (){
-
-	//Nativo
-	function carregarClientes(){
-		conteudo.innerHTML ="";
 		
-		$.get("clientes", function (objDados, status){
-	
-			
-	
-			conteudo = document.getElementById("conteudo");
-	
-			for (i=0; i<objDados.length ; i++){
-				
-				conteudo.innerHTML += objDados[i].id+ "| "  + objDados[i].nome + " | " + objDados[i].email + "<br>";
-			}
-			
-		});
-	}
-	//carregarClientes();
+	carregarClientes();
 
 	//jquery
 	
@@ -50,7 +33,38 @@ $(document).ready(function (){
 	
 	});	
 });
+
+function excluir (id){
+	if (window.confirm('Tem certeza que deseja excluir?')){
+		$.ajax({
+				url:'clientes/'+id,
+				type:'DELETE',
+				success:function(){
+					window.alert("Excluido com Sucesso!");
+					carregarClientes();
+				}
+			});
+	}
+}
+
+//Nativo
+function carregarClientes(){
+	conteudo.innerHTML ="";
 	
+	$.get("clientes", function (objDados, status){
+
+		conteudo = document.getElementById("conteudo");
+
+		for (i=0; i<objDados.length ; i++){
+			
+			conteudo.innerHTML += objDados[i].id+ "| "  + objDados[i].nome + " | " + objDados[i].email ;
+			conteudo.innerHTML += "<button onclick='excluir("+ objDados[i].id+")'>excluir</button><br>"			
+	
+			}
+		
+	});
+}
+
 </script>
 </head>
 <body>
