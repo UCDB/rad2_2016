@@ -14,15 +14,15 @@ $(document).ready(function (){
 	function carregarClientes(){
 		conteudo.innerHTML ="";
 		
-		$.get("clientes", function (data, status){
+		$.get("clientes", function (objDados, status){
 	
-			var objDados = JSON.parse(data);
+			
 	
 			conteudo = document.getElementById("conteudo");
 	
-			for (i=0; i<objDados.clientes.length ; i++){
+			for (i=0; i<objDados.length ; i++){
 				
-				conteudo.innerHTML += objDados.clientes[i].id+ "| "  + objDados.clientes[i].nome + " | " + objDados.clientes[i].email + "<br>";
+				conteudo.innerHTML += objDados[i].id+ "| "  + objDados[i].nome + " | " + objDados[i].email + "<br>";
 			}
 			
 		});
@@ -36,10 +36,18 @@ $(document).ready(function (){
 		txtNome = $("#txtNome").val();
 		txtEmail = $("#txtEmail").val();
 		
-		$.post("clientes",  { nome: txtNome , email: txtEmail}   , function (data, status){ 
-			window.alert("Salvo com Sucesso!");
-			carregarClientes();
-		},"json");
+		$.ajax({
+				url:'clientes',
+				type:'POST',
+				dataType:'json',
+				contentType:'application/json;charset=UTF-8',
+				data:JSON.stringify({nome:txtNome,email:txtEmail}),
+				success:function(){
+					window.alert("Salvo com Sucesso!");
+					carregarClientes();
+				}
+			});
+	
 	});	
 });
 	
